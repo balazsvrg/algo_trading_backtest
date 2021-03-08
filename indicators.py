@@ -7,6 +7,5 @@ def add_macd(df, plots):
     df['MACD'] =  ema1 - ema2
     df['MACD SIGNAL'] = df['MACD'].ewm(span=9, adjust=False).mean()
 
-    # doing it here is cleaner
     plots.append(mpf.make_addplot(df['MACD'], panel=1))
     plots.append(mpf.make_addplot(df['MACD SIGNAL'], panel=1))
