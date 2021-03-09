@@ -6,7 +6,9 @@ def add_sma(df, plots, span):
     try:
         df['SMA {}', span] = df['Close'].rolling(window=span).mean()
 
+        # Plotting ########################################
         plots.append(mpf.make_addplot(df['SMA {}', span]))
+        ###################################################
     except:
         print("SMA {} was not added due to an error. Check if DataFrame is correct.", span)
 
@@ -14,7 +16,9 @@ def add_ema(df, plots, span):
     try:
         df['EMA {}', span] = df['Close'].ewm(span=span, adjust=False).mean()
 
+        # Plotting ########################################
         plots.append(mpf.make_addplot(df['EMA {}', span]))
+        ###################################################
     except:
         print("EMA {} was not added due to an error. Check if DataFrame is correct.", span)
 
@@ -25,8 +29,11 @@ def add_macd(df, plots):
         df['MACD'] =  ema1 - ema2
         df['MACD SIGNAL'] = df['MACD'].ewm(span=9, adjust=False).mean()
 
+        # Plotting ########################################
         plots.append(mpf.make_addplot(df['MACD'], panel=1))
         plots.append(mpf.make_addplot(df['MACD SIGNAL'], panel=1))
+        ###################################################
+
     except:
         print("MACD was not added due to an error. Check if DataFrame is correct.")
 
@@ -96,9 +103,10 @@ def add_rsi(df, plots, span = 14):
             oversold_sig.append(30)
             overbought_sig.append(70)
 
-        plots.append(mpf.make_addplot(oversold_sig, panel=2, color='r'))
-        plots.append(mpf.make_addplot(overbought_sig, panel=2, color='r'))
+        # Plotting #########################################################
+        plots.append(mpf.make_addplot(oversold_sig, panel=2, color='r', secondary_y=False))
+        plots.append(mpf.make_addplot(overbought_sig, panel=2, color='r', secondary_y=False))
+        ####################################################################
 
     except:
         print("RSI was not added due to an error. Check if DataFrame is correct.")
-
