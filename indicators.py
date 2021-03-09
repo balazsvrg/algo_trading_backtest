@@ -111,5 +111,16 @@ def add_rsi(df, plots, span = 14, overbought_percent=70, oversold_percent=30):
     except:
         print("RSI was not added due to an error. Check if DataFrame is correct.")
 
-#def add_bollinger(df, plots, span = 20, deviations = 2):
+def add_bollinger(df, plots, span = 20, deviations = 2):
+    df['TP'] = df.iloc[:, [0, 1, 3]].mean(axis=1)
+    df['SMA BOLL'] = df['Close'].rolling(window=span).mean()
+
+    df['BOLU'] = df['SMA BOLL'] - df['TP'].rolling(window=span).std() * deviations
+    df['BOLD'] = df['SMA BOLL'] + df['TP'].rolling(window=span).std() * deviations
+
+    # Plotting ########################################################
+    plots.append(mpf.make_addplot(df['SMA BOLL'], panel=0))
+    plots.append(mpf.make_addplot(df['BOLU'], panel=0, color='gray'))
+    plots.append(mpf.make_addplot(df['BOLD'], panel=0, color='gray'))
+    ###################################################################
 
