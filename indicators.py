@@ -2,9 +2,9 @@ import numpy as np
 import pandas as pd
 import mplfinance as mpf
 
-def add_sma(df, plots, span):
+def add_sma(df, plots, span=20, row='Close'):
     try:
-        df['SMA {}', span] = df['Close'].rolling(window=span).mean()
+        df['SMA {}', span] = df[row].rolling(window=span).mean()
 
         # Plotting ########################################
         plots.append(mpf.make_addplot(df['SMA {}', span]))
@@ -12,9 +12,9 @@ def add_sma(df, plots, span):
     except:
         print("SMA {} was not added due to an error. Check if DataFrame is correct.", span)
 
-def add_ema(df, plots, span):
+def add_ema(df, plots, span=20, row='Close'):
     try:
-        df['EMA {}', span] = df['Close'].ewm(span=span, adjust=False).mean()
+        df['EMA {}', span] = df[row].ewm(span=span, adjust=False).mean()
 
         # Plotting ########################################
         plots.append(mpf.make_addplot(df['EMA {}', span]))
@@ -22,12 +22,12 @@ def add_ema(df, plots, span):
     except:
         print("EMA {} was not added due to an error. Check if DataFrame is correct.", span)
 
-def add_macd(df, plots):
+def add_macd(df, plots, row='Close', span1=12, span2=26, signalspan=9):
     try:
-        ema1 = df['Close'].ewm(span=12, adjust=False).mean()
-        ema2 = df['Close'].ewm(span=25, adjust=False).mean()
+        ema1 = df[row].ewm(span=span1, adjust=False).mean()
+        ema2 = df[row].ewm(span=span2, adjust=False).mean()
         df['MACD'] =  ema1 - ema2
-        df['MACD SIGNAL'] = df['MACD'].ewm(span=9, adjust=False).mean()
+        df['MACD SIGNAL'] = df['MACD'].ewm(span=signalspan, adjust=False).mean()
 
         # Plotting ########################################
         plots.append(mpf.make_addplot(df['MACD'], panel=1, secondary_y=True))
@@ -37,7 +37,7 @@ def add_macd(df, plots):
     except:
         print("MACD was not added due to an error. Check if DataFrame is correct.")
 
-def add_rsi(df, plots, span = 14):
+def add_rsi(df, plots, span = 14, overbought_percent=70, oversold_percent=30):
     try:
         close_data = []
 
@@ -100,8 +100,8 @@ def add_rsi(df, plots, span = 14):
         overbought_sig = []
 
         for i in range(0, len(df.index)):
-            oversold_sig.append(30)
-            overbought_sig.append(70)
+            oversold_sig.append(oversold_percent)
+            overbought_sig.append(overbought_percent)
 
         # Plotting #########################################################
         plots.append(mpf.make_addplot(oversold_sig, panel=2, color='r', secondary_y=False, width=1, linestyle='dashdot'))
@@ -110,3 +110,6 @@ def add_rsi(df, plots, span = 14):
 
     except:
         print("RSI was not added due to an error. Check if DataFrame is correct.")
+
+#def add_bollinger(df, plots, span = 20, deviations = 2):
+
