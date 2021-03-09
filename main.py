@@ -14,7 +14,10 @@ def main():
     ind.add_macd(df, plots)
     ind.add_sma(df, plots, span=20)
     ind.add_ema(df, plots, span=20)
+    ind.add_rsi(df, plots)
     mpf.plot(df, type='candle', style='yahoo', title='TSLA', volume=True, addplot=plots)
+
+    ind.add_rsi(df, plots, 14)
 
 if __name__ == "__main__":
     main()
