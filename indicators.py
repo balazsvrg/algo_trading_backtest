@@ -30,8 +30,8 @@ def add_macd(df, plots):
         df['MACD SIGNAL'] = df['MACD'].ewm(span=9, adjust=False).mean()
 
         # Plotting ########################################
-        plots.append(mpf.make_addplot(df['MACD'], panel=1))
-        plots.append(mpf.make_addplot(df['MACD SIGNAL'], panel=1))
+        plots.append(mpf.make_addplot(df['MACD'], panel=1, secondary_y=True))
+        plots.append(mpf.make_addplot(df['MACD SIGNAL'], panel=1, secondary_y=True))
         ###################################################
 
     except:
@@ -104,8 +104,8 @@ def add_rsi(df, plots, span = 14):
             overbought_sig.append(70)
 
         # Plotting #########################################################
-        plots.append(mpf.make_addplot(oversold_sig, panel=2, color='r', secondary_y=False))
-        plots.append(mpf.make_addplot(overbought_sig, panel=2, color='r', secondary_y=False))
+        plots.append(mpf.make_addplot(oversold_sig, panel=2, color='r', secondary_y=False, width=1, linestyle='dashdot'))
+        plots.append(mpf.make_addplot(overbought_sig, panel=2, color='r', secondary_y=False, width=1, linestyle='dashdot'))
         ####################################################################
 
     except:

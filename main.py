@@ -5,10 +5,10 @@ import pandas_datareader.data as web
 import indicators as ind
 
 def main():
-    start = dt.datetime(2020,6,3)
+    start = dt.datetime(2019,6,3)
     end = dt.datetime(2021,3,13)
 
-    ticker = 'MSFT'
+    ticker = 'OTP.BD'
     titlestring = ticker + ': ' + str(start) + ' - ' + str(end)
 
     df = web.DataReader(ticker, 'yahoo', start, end)
@@ -19,8 +19,6 @@ def main():
     ind.add_ema(df, plots, span=20)
     ind.add_rsi(df, plots)
     mpf.plot(df, type='candle', style='yahoo', title=titlestring, volume=True, addplot=plots)
-
-    ind.add_rsi(df, plots, 14)
 
 if __name__ == "__main__":
     main()
