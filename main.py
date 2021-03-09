@@ -12,6 +12,8 @@ def main():
     
     plots = []
     ind.add_macd(df, plots)
+    ind.add_sma(df, plots, span=20)
+    ind.add_ema(df, plots, span=20)
     mpf.plot(df, type='candle', style='yahoo', title='TSLA', volume=True, addplot=plots)
 
 if __name__ == "__main__":
