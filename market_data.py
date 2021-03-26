@@ -1,4 +1,3 @@
-import numpy as np
 import pandas as pd
 import mplfinance as mpf
 
@@ -11,6 +10,9 @@ class market_data:
         self.has_macd = False
         self.has_rsi = False
         self.has_bollinger = False
+
+    def __getitem__(self, key):
+        return self.ohlc[key]
 
     def add_sma(self, span=20, name='SMA', row='Close') -> pd.DataFrame:
         try:
