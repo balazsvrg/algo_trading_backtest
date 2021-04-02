@@ -11,15 +11,15 @@ def main():
                     ind.macd(otp_data), ind.rsi(otp_data),
                     ind.bollinger(otp_data)]
 
+    plotter = plt.plotter(otp_data)
+
+
     for i in indicators:
-        print( i.type + "-------------------------------------------------")
-        print("Initial Data: ")
-        print(i.data)
-        i.update(otp_data)
-        print("Data after update: ")
-        print(i.data)
-        print("Signal at 2021-03-10: ")
-        print(i.signal_at('2021-03-10'))
+        plotter.add_plot(i)
+
+    plotter.plot()
+
+    #mpf.plot(otp_data)
     
 
 if __name__ == "__main__":

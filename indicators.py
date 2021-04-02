@@ -115,7 +115,7 @@ class ema(indicator):
 class macd(indicator):
     count = 0
     def __init__(self, mdata, span1=12, span2=26, signalspan=9, rowname="Close"):
-        self._type = "ema"
+        self._type = "macd"
         self._data = pd.DataFrame()
         self._span1 = span1
         self._span2 = span2
@@ -124,7 +124,7 @@ class macd(indicator):
 
         macd.count += 1
 
-        self._name = "MACD " + str(macd.count)
+        self._name = "MACD"
         self._signal_name = self._name + " Signal"
 
         self.__calc_data(mdata, rowname)
