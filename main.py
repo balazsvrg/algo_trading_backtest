@@ -12,14 +12,15 @@ def main():
                     ind.bollinger(otp_data)]
 
     for i in indicators:
-        print( i.get_type() + "-------------------------------------------------")
+        print( i.type + "-------------------------------------------------")
         print("Initial Data: ")
-        print(i.get_data())
+        print(i.data)
         i.update(otp_data)
         print("Data after update: ")
-        print(i.get_data())
+        print(i.data)
         print("Signal at 2021-03-10: ")
         print(i.signal_at('2021-03-10'))
+    
 
 if __name__ == "__main__":
     main()

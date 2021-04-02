@@ -2,10 +2,12 @@ import pandas as pd
 import mplfinance as mpf
 
 class plotter:
-    def __init__(self, market_data, title="Stock Data"):
+    def __init__(self, mdata, title="Stock Data"):
         self.market_data = market_data
         self.plots = pd.DataFrame()
         self.titlestring = title
+
+        
 
     def plot(self, type = 'candle', style = 'yahoo', volume = True):
         mpf.plot(self.market_data, type=type, style=style, title=self.titlestring, volume=volume, addplot=self.plots)
