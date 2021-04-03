@@ -3,7 +3,12 @@ import pandas as pd
 from abc import ABC, abstractmethod
 
 class indicator(ABC):
+    """Base class for all indicators
 
+    Properties:
+        type (str): Type of indicator represented in short.
+        data (pandas.DataFrame): Calculated values of the indicator.
+    """
     @abstractmethod
     def update(self):
         pass
@@ -22,7 +27,18 @@ class indicator(ABC):
     def data(self):
         pass
 
+
 class sma(indicator):
+    """Simple moving average indicator.
+
+    Calculates the non-weighted average of the closing prices on a 
+    given dataset.
+
+    Properties:
+        type: Type of the indicator (set to 'sma' by default)
+        data: Calculated sma on the given dataset.
+        span: Number of datapoints used in the calculation
+    """
     def __init__(self, mdata, span=20, rowname='Close'):
         self._type = "sma"
         self._data = pd.DataFrame()
@@ -43,12 +59,14 @@ class sma(indicator):
     def span(self):
         return self._span
 
-    @span.setter # minden átállított paraméter után meg **KELL** hívni az update() függvényt
+    # The function update() needs to be called after every parameter setting.  
+    @span.setter 
     def span(self, value):
         self._span = value
 
     def __calc_data(self, mdata):
-        self._data['SMA'] = mdata[self._rowname].rolling(window=self._span).mean()
+        self._data['SMA'] = mdata[self._rowname].rolling(
+            window=self._span).mean()
 
         self._data['Date'] = mdata['Date']
         self._data.set_index('Date', inplace=True)
@@ -88,13 +106,15 @@ class ema(indicator):
     def span(self):
         return self._span
 
-    @span.setter # minden átállított paraméter után meg **KELL** hívni az update() függvényt
+    # The function update() needs to be called after every parameter setting.  
+    @span.setter 
     def span(self, value):
         self._span = value
 
     def __calc_data(self, mdata):
         col_name = "EMA " + str(self._span)
-        self._data[col_name] = mdata[self._rowname].ewm(span=self._span, adjust=False).mean()
+        self._data[col_name] = mdata[self._rowname].ewm(
+            span=self._span, adjust=False).mean()
 
         self._data['Date'] = mdata['Date']
         self._data.set_index('Date', inplace=True)
@@ -114,7 +134,9 @@ class ema(indicator):
 
 class macd(indicator):
     count = 0
-    def __init__(self, mdata, span1=12, span2=26, signalspan=9, rowname="Close"):
+    def __init__(
+            self, mdata, span1=12, span2=26, signalspan=9, 
+            rowname="Close"):
         self._type = "macd"
         self._data = pd.DataFrame()
         self._span1 = span1
@@ -141,7 +163,8 @@ class macd(indicator):
     def span1(self):
         return self._span1
 
-    @span1.setter # minden átállított paraméter után meg **KELL** hívni az update() függvényt
+    # The function update() needs to be called after every parameter setting.  
+    @span1.setter 
     def span(self, value):
         self._span1 = value
     
@@ -149,7 +172,8 @@ class macd(indicator):
     def span2(self):
         return self._span2
 
-    @span2.setter # minden átállított paraméter után meg **KELL** hívni az update() függvényt
+    # The function update() needs to be called after every parameter setting.  
+    @span2.setter
     def span2(self, value):
         self._span2 = value
 
@@ -157,16 +181,20 @@ class macd(indicator):
     def signalspan(self):
         return self._signalspan
 
-    @signalspan.setter # minden átállított paraméter után meg **KELL** hívni az update() függvényt
+    # The function update() needs to be called after every parameter setting.  
+    @signalspan.setter
     def signalspan(self, value):
         self._signalspan = value
 
     def __calc_data(self, mdata, rowname='Close'):
-        ema1 = mdata[rowname].ewm(span=self._span1, adjust=False).mean()
-        ema2 = mdata[rowname].ewm(span=self._span2, adjust=False).mean()
+        ema1 = mdata[rowname].ewm(
+            span=self._span1, adjust=False).mean()
+        ema2 = mdata[rowname].ewm(
+            span=self._span2, adjust=False).mean()
 
         macd_line = ema1 - ema2
-        signal_line = macd_line.ewm(span=self._signalspan, adjust=False).mean()
+        signal_line = macd_line.ewm(
+            span=self._signalspan, adjust=False).mean()
 
         self._data[self._name] = ema1 - ema2
         self._data[self._signal_name] = signal_line
@@ -208,7 +236,9 @@ class macd(indicator):
 
 
 class rsi(indicator):
-    def __init__(self, mdata, span=14, rowname='Close', overbought_percent=70, oversold_percent=30):
+    def __init__(
+            self, mdata, span=14, rowname='Close', 
+            overbought_percent=70, oversold_percent=30):
         self._type = "rsi"
         self._data = pd.DataFrame()
 
@@ -231,16 +261,18 @@ class rsi(indicator):
     @property
     def span(self):
         return self._span
-
-    @span.setter # minden átállított paraméter után meg **KELL** hívni az update() függvényt
+    
+    # The function update() needs to be called after every parameter setting.  
+    @span.setter
     def span(self, value):
         self._span = value
 
     @property
     def overbought_percent(self):
         return self._overbought_percent
-
-    @overbought_percent.setter # minden átállított paraméter után meg **KELL** hívni az update() függvényt
+    
+    # The function update() needs to be called after every parameter setting.  
+    @overbought_percent.setter
     def overbought_percent(self, value):
         self._overbought_percent = value
 
@@ -248,7 +280,8 @@ class rsi(indicator):
     def oversold_percent(self):
         return self._oversold_percent
 
-    @oversold_percent.setter # minden átállított paraméter után meg **KELL** hívni az update() függvényt
+    # The function update() needs to be called after every parameter setting.  
+    @oversold_percent.setter
     def oversold_percent(self, value):
         self._oversold_percent = value
 
@@ -277,8 +310,8 @@ class rsi(indicator):
                 rsi.append(None)
 
             elif (i == self._span):
-                avg_updiff = sum(up_diffs)/self._span
-                avg_downdiff = sum(down_diffs)/self._span
+                avg_updiff = sum(up_diffs) / self._span
+                avg_downdiff = sum(down_diffs) / self._span
 
                 rsi.append(100 - ( 100 / (1 + (avg_updiff / avg_downdiff))))
 
@@ -287,12 +320,17 @@ class rsi(indicator):
 
             else:
                 if (diff >= 0):
-                    # Are these correct? Probably not
-                    avg_updiff = ((self._span - 1) * prev_avg_updiff + diff) / self._span
-                    avg_downdiff = ((self._span - 1) * prev_avg_downdiff) / self._span
+                    avg_updiff = ((self._span - 1) 
+                                 * prev_avg_updiff 
+                                 + diff) / self._span
+                    avg_downdiff = ((self._span - 1) 
+                                 * prev_avg_downdiff) / self._span
                 else:
-                    avg_updiff = ((self._span - 1) * prev_avg_updiff) / self._span
-                    avg_downdiff = ((self._span - 1) * prev_avg_downdiff + abs(diff)) / self._span
+                    avg_updiff = ((self._span - 1) 
+                                 * prev_avg_updiff) / self._span
+                    avg_downdiff = ((self._span - 1) 
+                                 * prev_avg_downdiff 
+                                 + abs(diff)) / self._span
                     
                 rsi.append(100 - ( 100 / (1 + (avg_updiff / avg_downdiff))))
 
@@ -305,9 +343,8 @@ class rsi(indicator):
         self._data['Date'] = mdata['Date']
         self._data.set_index('Date', inplace=True)
 
-    def __calc_signal(self): # Temporary implementation
+    def __calc_signal(self):    # Temporary implementation  
         flag = False
-
         buy_sell = []
         data = self._data[self._name]
 
@@ -354,7 +391,8 @@ class bollinger(indicator):
     def span(self):
         return self._span
 
-    @span.setter # minden átállított paraméter után meg **KELL** hívni az update() függvényt
+    # The function update() needs to be called after every parameter setting.  
+    @span.setter 
     def span(self, value):
         self._span = value
 
@@ -362,16 +400,24 @@ class bollinger(indicator):
     def deviations(self):
         return self._deviations
 
-    @deviations.setter # minden átállított paraméter után meg **KELL** hívni az update() függvényt
+    # The function update() needs to be called after every parameter setting.  
+    @deviations.setter
     def deviations(self, value):
         self._deviations = value
 
     def __calc_data(self, mdata):
         tp = mdata.iloc[:, [0, 1, 3]].mean(axis=1)
-        self._data['SMA BOLL'] = mdata['Close'].rolling(window=self._span).mean()
+        self._data['SMA BOLL'] = mdata['Close'].rolling(
+            window=self._span).mean()
 
-        self._data['BOLU'] = self._data['SMA BOLL'] - self._data['SMA BOLL'] - tp.rolling(window=self._span).std() * self._deviations
-        self._data['BOLD'] = self._data['SMA BOLL'] - self._data['SMA BOLL'] + tp.rolling(window=self._span).std() * self._deviations
+        self._data['BOLU'] = ((self._data['SMA BOLL'] 
+                             - self._data['SMA BOLL'])
+                             - tp.rolling(window=self._span).std() 
+                             * self._deviations)
+        self._data['BOLD'] = ((self._data['SMA BOLL'] 
+                             - self._data['SMA BOLL'])
+                             + tp.rolling(window=self._span).std()
+                             * self._deviations)
 
         self.__calc_signal()
 
