@@ -8,7 +8,7 @@ def main():
     otp_data = pd.read_csv('data.csv')
 
     indicators = [
-                  ind.sma(otp_data),
+                  ind.macd(otp_data),
                   ]
 
     plotter = plt.plotter(otp_data)
@@ -17,9 +17,7 @@ def main():
     for i in indicators:
         plotter.add_plot(i)
 
-    # plotter.plot()
-
-    help(ind.sma)
+    plotter.plot()
 
 
 if __name__ == "__main__":

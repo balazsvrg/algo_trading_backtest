@@ -59,16 +59,28 @@ class plotter:
 
         elif (indicator.type == "macd"):
             self._indicators.append(
-                mpf.make_addplot(indicator.data["MACD"], 
-                panel=1, color='g', secondary_y=True))
+                mpf.make_addplot(
+                                indicator.data["MACD"], 
+                                panel=1,
+                                color='g',
+                                secondary_y=True,
+                                ))
             self._indicators.append(
-                mpf.make_addplot(indicator.data["MACD Signal"], 
-                panel=1, color='b', secondary_y=True))
+                mpf.make_addplot(
+                                indicator.data["MACD Signal"], 
+                                panel=1,
+                                color='b',
+                                secondary_y=True,
+                                ))
 
         elif (indicator.type == "rsi"):
             self._indicators.append(
-                mpf.make_addplot(indicator.data["RSI"],
-                panel=2, color='b', secondary_y=True))
+                mpf.make_addplot(
+                                indicator.data["RSI"],
+                                panel=2,
+                                color='b',
+                                secondary_y=True,
+                                ))
             self._hlines.append(indicator.overbought_percent)
             self._hlines.append(indicator.oversold_percent)
 
