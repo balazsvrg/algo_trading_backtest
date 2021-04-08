@@ -1,5 +1,6 @@
 import datetime as dt
 import pandas as pd
+import numpy as np
 from abc import ABC, abstractmethod
 
 class indicator(ABC):
@@ -433,4 +434,191 @@ class bollinger(indicator):
 
     def signal_at(self, datetime):
         pass
+
+
+#a span igazából period
+class mfi(indicator):
+    def __init__(
+            self, mdata, span=14, 
+            overbought_percent=80, oversold_percent=20):
+        self._type = "mfi"
+        self._data = pd.DataFrame()
+
+        self._span = span
+        self._overbought_percent = overbought_percent
+        self._oversold_percent = oversold_percent
+
+        self._name = "MFI"
+
+        self.__calc_data(mdata)
+    @property
+    def type(self):
+        return self._type
+
+    @property
+    def data(self):
+        return self._data
+
+    @property
+    def span(self):
+        return self._span
+    
+    # The function update() needs to be called after every parameter setting.  
+    @span.setter
+    def span(self, value):
+        self._span = value
+
+    @property
+    def overbought_percent(self):
+        return self._overbought_percent
+    
+    # The function update() needs to be called after every parameter setting.  
+    @overbought_percent.setter
+    def overbought_percent(self, value):
+        self._overbought_percent = value
+
+    @property
+    def oversold_percent(self):
+        return self._oversold_percent
+
+    # The function update() needs to be called after every parameter setting.  
+    @oversold_percent.setter
+    def oversold_percent(self, value):
+        self._oversold_percent = value
+
+    def __calc_data(self, mdata):
+        high_nums = mdata['High']
+        low_nums = mdata['Low']
+        close_nums = mdata['Close'] 
+        typical_price = []
+        money_flow = []
+        positive_money_flow = []
+        negative_money_flow = []
+        positive_mf = []
+        negative_mf = []
+
+
+        typical_price = (high_nums + low_nums + close_nums) / 3
+        money_flow = typical_price * mdata['Volume'] 
+
+        for i in range(0, len(typical_price)):
+            if typical_price[i] > typical_price[i-1]:
+                positive_money_flow.append(money_flow[i-1])
+                negative_money_flow.append(0)  
+            elif typical_price[i] < typical_price[i-1]:
+                 negative_money_flow.append(money_flow[i-1]) 
+                 positive_money_flow.append(0) 
+            else:
+                positive_money_flow.append(0)
+                negative_money_flow.append(0) 
+
+        for i in range(self._span - 1, len(positive_money_flow)):
+            positive_mf.append(sum(positive_money_flow[i + 1 - self._span : i+1]))
+    
+    
+        for i in range(self._span - 1, len(negative_money_flow)):
+            negative_mf.append(sum(negative_money_flow[i + 1 - self._span : i+1]))
+
+        mfi = 100 * (np.array(positive_mf)/(np.array(positive_mf) + np.array(negative_mf)))
+
+class obv(indicator):
+
+    def __init__(
+        self, mdata, span = 10 ):
+        self.type = 'obv'
+        self._data = pd.DataFrame()
+
+        self._span = span
+        self._name = "OBV"
+
+        self.__calc_data(mdata)
+
+     @property
+    def type(self):
+        return self._type
+
+    @property
+    def data(self):
+        return self._data
+
+    @property
+    def span(self):
+        return self._span
+    
+    # The function update() needs to be called after every parameter setting.  
+    @span.setter
+    def span(self, value):
+        self._span = value
+
+
+
+    def __calc_data(mdata):
+        obv = []
+        obv.append(0)
+        close = mdata['Close']
+        volume = mdata['Volume']
+
+        for i in range(1, len(close)):
+            if close[i] > close[i-1]:
+                obv.append(obv[-1] + volume[i])
+            elif close[i] < close[i-1]:
+                obv.append(obv[-1] - volume[i])
+            else:
+                obv.append(obv[-1])
+
+class dema(indicator):
+
+    def __init__(
+        self, mdata, span = 10, rowname= 'close'):
+        self.type = 'dema'
+        self._data = pd.DataFrame()
+        self._rowname = rowname
+
+        self._span = span
+        self._name = "DEMA"
+
+        self.__calc_data(mdata)
+
+     @property
+    def type(self):
+        return self._type
+
+    @property
+    def data(self):
+        return self._data
+
+    @property
+    def span(self):
+        return self._span
+
+    # The function update() needs to be called after every parameter setting.  
+    @span.setter 
+    def span(self, value):
+        self._span = value    
+    
+    def __calc_data(mdata, span, rowname):
+
+            ema = mdata[rowname].ewm(span=span, adjust = False).mean()
+            dema = 2 * ema - ema.ewm(span=span, adjust = False).mean()
+    
+    return dema
+
+    def __cals_signal(self):
+            buy_list = [] 
+            sell_list = []
+            flag = False
+    
+    #dema shortot meg kell még csinálni meg a dema longot is 
+        for i in range(0, len(data)):
+            if self._data['DemaShort'][i] > self._data['DemaLong'][i] and flag = False:
+                buy_list.append(self._data['Close'])
+                sell_list.append(np.nan)
+                flag = True
+            elif self._data['DemaShort'][i] < self._data['DemaLong'][i] and flag = False:
+                sell_list.append(self._data['Close'])
+                buy_list.append(np.nan)
+                flag = False
+            else:
+                buy_list.append(np.nan)
+                sell_list.append(np.nan)
 
