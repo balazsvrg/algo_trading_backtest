@@ -8,7 +8,7 @@ def main():
     otp_data = pd.read_csv('data.csv')
 
     indicators = [
-                  ind.macd(otp_data),
+                  ind.sar(otp_data),
                   ]
 
     plotter = plt.plotter(otp_data)

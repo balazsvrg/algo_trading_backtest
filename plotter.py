@@ -2,6 +2,7 @@ import pandas as pd
 import mplfinance as mpf
 import indicators as ind
 
+
 class plotter:
     """Plot indicators and market data.
 
@@ -56,34 +57,51 @@ class plotter:
         elif (indicator.type == "ema"):
             self._indicators.append(
                 mpf.make_addplot(indicator.data, panel=0))
+        
+        elif (indicator.type == 'cci'):
+            self._indicators.append(
+                mpf.make_addplot(indicator.data, panel=0))
+
+        elif (indicator.type == 'mfi'):
+            self._indicators.append(
+                mpf.make_addplot(indicator.data, panel=0))
+
+        elif (indicator.type == 'tema'):
+            self._indicators.append(
+                mpf.make_addplot(indicator.data, panel=0))
+
+        elif (indicator.type == 'dema'):
+            self._indicators.append(
+                mpf.make_addplot(indicator.data, panel=0))
+
+        elif (indicator.type == 'rsi'):
+            self._indicators.append(
+                mpf.make_addplot(indicator.data, panel=0))
 
         elif (indicator.type == "macd"):
             self._indicators.append(
-                mpf.make_addplot(
-                                indicator.data["MACD"], 
-                                panel=1,
-                                color='g',
-                                secondary_y=True,
-                                ))
-            self._indicators.append(
-                mpf.make_addplot(
-                                indicator.data["MACD Signal"], 
-                                panel=1,
-                                color='b',
-                                secondary_y=True,
-                                ))
+                mpf.make_addplot(indicator.data, panel=0))
 
-        elif (indicator.type == "rsi"):
+        elif (indicator.type == "wma"):
             self._indicators.append(
-                mpf.make_addplot(
-                                indicator.data["RSI"],
-                                panel=2,
-                                color='b',
-                                secondary_y=True,
-                                ))
-            self._hlines.append(indicator.overbought_percent)
-            self._hlines.append(indicator.oversold_percent)
+                mpf.make_addplot(indicator.data, panel=0))
 
         elif (indicator.type == "bollinger"):
             self._indicators.append(
                 mpf.make_addplot(indicator.data, panel=0))
+
+        elif (indicator.type == "roc"):
+            self._indicators.append(
+                mpf.make_addplot(indicator.data, panel=0))
+
+        elif (indicator.type == "stochrsi"):
+            self._indicators.append(
+                mpf.make_addplot(indicator.data, panel=0))
+
+        elif (indicator.type == "obv"):
+            self._indicators.append(
+                mpf.make_addplot(indicator.data, panel=0))
+
+        elif (indicator.type == "sar"):
+            self._indicators.append(
+                mpf.make_addplot(indicator.data, panel=0))        
