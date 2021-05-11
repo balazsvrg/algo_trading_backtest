@@ -71,10 +71,6 @@ class Backtest:
             self.trades[-1].close(self.data.loc[len(self.data)-1, 'Close'], i)
 
         self.print_stats()
-        # print("--Backtest Ran----------")
-        # print(f"Starting cash: {self._start_cash}")
-        # print(f"Ending cash: {self.cash}")
-        # print(f"Profit: {self.cash / self._start_cash * 100}")
 
     def print_stats(self):
         exposure_time = 0

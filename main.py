@@ -6,24 +6,25 @@ import talib
 import mplfinance as mpf
 import pandas as pd
 import plotter as plt
+import gspread
 
 # Local imports
 import indicators as ind
 import backtest as bt
 
-OTP_DATA =  pd.read_csv('data.csv')
-
 class MyStrategy(bt.Strategy):
     def init(self):
-        self.indicators.append(talib.SMA(OTP_DATA['Close'], 10))
-        self.indicators.append(talib.SMA(OTP_DATA['Close'], 20))
+        self.indicators.append(ind.sma(OTP_DATA, span=10))
+        self.indicators.append(ind.sma(OTP_DATA, span=20))
     
     def next(self, index):
-        if self.crossover(self.indicators[0], self.indicators[1], index):
+        if self.crossover(self.indicators[0]['SMA'], self.indicators[1]['SMA'], index):
             self.buy()
         
-        elif self.crossover(self.indicators[1], self.indicators[0], index):
+        elif self.crossover(self.indicators[1]['SMA'], self.indicators[0]['SMA'], index):
             self.sell()
+
+
 
 def main():
     smacross = MyStrategy()
@@ -46,4 +47,5 @@ def main():
 
 
 if __name__ == "__main__":
+    OTP_DATA =  pd.read_csv('data.csv')
     main()

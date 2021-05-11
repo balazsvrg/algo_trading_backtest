@@ -68,6 +68,9 @@ class sma(indicator):
     @span.setter 
     def span(self, value):
         self._span = value
+    
+    def __getitem__(self, index):
+        return self._data[index]
 
     def __calc_data(self, mdata):
 
@@ -112,6 +115,9 @@ class ema(indicator):
     @span.setter 
     def span(self, value):
         self._span = value
+
+    def __getitem__(self, index):
+        return self._data[index]
 
     def __calc_data(self, mdata):
 
@@ -163,6 +169,9 @@ class cci(indicator):
     def span(self, value):
         self._span = value
 
+    def __getitem__(self, index):
+        return self._data[index]
+
     def __calc_data(self, mdata):
 
 
@@ -212,6 +221,9 @@ class macd(indicator):
     def span(self, value):
         self._span = value
 
+    def __getitem__(self, index):
+        return self._data[index]
+
     def __calc_data(self, mdata):
 
 
@@ -257,6 +269,9 @@ class mfi(indicator):
     @span.setter 
     def span(self, value):
         self._span = value
+
+    def __getitem__(self, index):
+        return self._data[index]
 
     def __calc_data(self, mdata):
 
@@ -310,6 +325,9 @@ class tema(indicator):
     @span.setter 
     def span(self, value):
         self._span = value
+
+    def __getitem__(self, index):
+        return self._data[index]
 
     def __calc_data(self, mdata):
 
@@ -365,6 +383,9 @@ class dema(indicator):
     def span(self, value):
         self._span = value
 
+    def __getitem__(self, index):
+        return self._data[index]
+
     def __calc_data(self, mdata):
 
 
@@ -417,6 +438,9 @@ class rsi(indicator):
     @span.setter 
     def span(self, value):
         self._span = value
+
+    def __getitem__(self, index):
+        return self._data[index]
 
     def __calc_data(self, mdata):
 
@@ -471,6 +495,9 @@ class wma(indicator):
     def span(self, value):
         self._span = value
 
+    def __getitem__(self, index):
+        return self._data[index]
+
     def __calc_data(self, mdata):
 
 
@@ -523,6 +550,9 @@ class bollinger(indicator):
     @span.setter 
     def span(self, value):
         self._span = value
+
+    def __getitem__(self, index):
+        return self._data[index]
 
     def __calc_data(self, mdata):
 
@@ -578,6 +608,9 @@ class roc(indicator):
     def span(self, value):
         self._span = value
 
+    def __getitem__(self, index):
+        return self._data[index]
+
     def __calc_data(self, mdata):
 
 
@@ -630,6 +663,9 @@ class stochrsi(indicator):
     @span.setter 
     def span(self, value):
         self._span = value
+
+    def __getitem__(self, index):
+        return self._data[index]
 
     def __calc_data(self, mdata):
 
@@ -684,6 +720,9 @@ class obv(indicator):
     def span(self, value):
         self._span = value
 
+    def __getitem__(self, index):
+        return self._data[index]
+
     def __calc_data(self, mdata):
 
 
@@ -736,6 +775,9 @@ class sar(indicator):
     @span.setter 
     def span(self, value):
         self._span = value
+
+    def __getitem__(self, index):
+        return self._data[index]
 
     def __calc_data(self, mdata):
 
