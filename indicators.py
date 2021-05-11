@@ -1,6 +1,9 @@
+# Standard Library imports
 import datetime as dt
-import pandas as pd
 from abc import ABC, abstractmethod
+
+# 3rd party imports
+import pandas as pd
 
 class indicator(ABC):
     """Base class for all indicators
