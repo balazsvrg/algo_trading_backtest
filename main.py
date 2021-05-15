@@ -14,27 +14,27 @@ import backtest as bt
 
 class MyStrategy(bt.Strategy):
     def init(self):
-        self.indicators.append(ind.sma(OTP_DATA, span=10))
-        self.indicators.append(ind.sma(OTP_DATA, span=20))
+        self.indicators.append(ind.cci(OTP_DATA, span=10))
+        self.indicators.append(ind.cci(OTP_DATA, span=20))
     
     def next(self, index):
-        if self.crossover(self.indicators[0]['SMA'], self.indicators[1]['SMA'], index):
+        if self.crossover(self.indicators[0]['CCI'], self.indicators[1]['CCI'], index):
             self.buy()
         
-        elif self.crossover(self.indicators[1]['SMA'], self.indicators[0]['SMA'], index):
+        elif self.crossover(self.indicators[1]['CCI'], self.indicators[0]['CCI'], index):
             self.sell()
 
 
 
 def main():
-    smacross = MyStrategy()
+    adxcross = MyStrategy()
 
-    btest = bt.Backtest(500000.0, OTP_DATA, smacross)
+    btest = bt.Backtest(500000.0, OTP_DATA, adxcross)
     btest.run()
 
     indicators = [
-                  ind.sma(OTP_DATA, span=10),
-                  ind.sma(OTP_DATA, span=20),
+                  ind.cci(OTP_DATA, span=10),
+                  ind.cci(OTP_DATA, span=20),
                   ]
 
     plotter = plt.plotter(OTP_DATA)

@@ -1,6 +1,7 @@
 
 import gspread 
 from tkinter import *
+import pandas as pd
 
 #a json-ön keresztül itt írom be a fájl nevét
 gc = gspread.service_account(filename='finance.json')
@@ -11,6 +12,15 @@ worksheet = sh.sheet1
 #a sheetnek ezt a ranget használom, ezt olvasom be, külön el lehet érni sorokat, cellákat, oszlopokat vagy kiíratom az egész táblázatot
 res = worksheet.get_all_records()
 #printelem az egész sheetet, amit lekértem tőle
-print(res)
 
+df = pd.DataFrame(res)
+df = df.iloc[:342, 2:8]
+df['Open'] = pd.to_numeric(df['Open'], downcast="float")
+df['High'] = pd.to_numeric(df['High'], downcast="float")
+df['Low'] = pd.to_numeric(df['Low'], downcast="float")
+df['Close'] = pd.to_numeric(df['Close'], downcast="float")
+df['Volume'] = pd.to_numeric(df['Volume'], downcast="float")
+print(df.dtypes)
+column = ['Date','Open', 'High', 'Low', 'Close', 'Volume']
+df.to_csv('data.csv', columns=column)
 

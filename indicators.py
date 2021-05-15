@@ -126,10 +126,8 @@ class ema(indicator):
         time = self._span
         ema = ta.EMA(close, timeperiod=time)
 
-
-        col_name = "EMA " + str(self._span)
         
-        self._data[col_name] = ema
+        self._data['EMA'] = ema
         """
         self._data['Date'] = mdata['Date']
         self._data.set_index('Date', inplace=True)
@@ -180,11 +178,8 @@ class cci(indicator):
         low = mdata['Low']
         time = self._span
         cci = ta.CCI(high, low, close, timeperiod=time)
-
-
-        col_name = "CCI " + str(self._span)
         
-        self._data[col_name] = cci
+        self._data['CCI'] = cci
  
     def update(self, mdata):
         self._data.drop(self._data.index, inplace=True)
@@ -230,10 +225,8 @@ class macd(indicator):
         close = mdata['Close']
         macd = ta.MACD(close, fastperiod=12, slowperiod=26, signalperiod=9)
 
-
-        col_name = "MACD " + str(self._span)
         
-        self._data[col_name] = macd
+        self._data['MACD'] = macd
  
     def update(self, mdata):
         self._data.drop(self._data.index, inplace=True)
@@ -283,10 +276,8 @@ class mfi(indicator):
         time = self._span
         mfi = ta.MFI(high, low, close, volume)
 
-
-        col_name = "MFI " + str(self._span)
         
-        self._data[col_name] = mfi
+        self._data['MFI'] = mfi
         """
         self._data['Date'] = mdata['Date']
         self._data.set_index('Date', inplace=True)
@@ -338,11 +329,8 @@ class tema(indicator):
         volume = mdata['Volume']
         time = self._span
         tema = ta.TEMA(close, timeperiod=30)
-
-
-        col_name = "TEMA " + str(self._span)
         
-        self._data[col_name] = tema
+        self._data['TEMA'] = tema
         """
         self._data['Date'] = mdata['Date']
         self._data.set_index('Date', inplace=True)
@@ -395,11 +383,8 @@ class dema(indicator):
         volume = mdata['Volume']
         time = self._span
         dema = ta.DEMA(close, timeperiod=30)
-
-
-        col_name = "DEMA " + str(self._span)
         
-        self._data[col_name] = dema
+        self._data['DEMA'] = dema
         """
         self._data['Date'] = mdata['Date']
         self._data.set_index('Date', inplace=True)
@@ -452,10 +437,8 @@ class rsi(indicator):
         time = self._span
         rsi = ta.RSI(close, timeperiod=14)
 
-
-        col_name = "RSI " + str(self._span)
         
-        self._data[col_name] = rsi
+        self._data['RSI'] = rsi
         """
         self._data['Date'] = mdata['Date']
         self._data.set_index('Date', inplace=True)
@@ -508,10 +491,8 @@ class wma(indicator):
         time = self._span
         wma = ta.WMA(close, timeperiod=30)
 
-
-        col_name = "WMA " + str(self._span)
         
-        self._data[col_name] = wma
+        self._data['WMA'] = wma
         """
         self._data['Date'] = mdata['Date']
         self._data.set_index('Date', inplace=True)
@@ -565,10 +546,8 @@ class bollinger(indicator):
         time = self._span
         bollinger = ta.BBANDS(floatclose, timeperiod=5, nbdevup=2, nbdevdn=2)
 
-
-        col_name = "BOLLINGER " + str(self._span)
         
-        self._data[col_name] = bollinger
+        self._data['BOLLINGER'] = bollinger
         """
         self._data['Date'] = mdata['Date']
         self._data.set_index('Date', inplace=True)
@@ -621,10 +600,8 @@ class roc(indicator):
         time = self._span
         roc = ta.ROC(close, timeperiod=10)
         
-
-        col_name = "ROC " + str(self._span)
         
-        self._data[col_name] = roc
+        self._data['ROC'] = roc
         """
         self._data['Date'] = mdata['Date']
         self._data.set_index('Date', inplace=True)
@@ -677,10 +654,8 @@ class stochrsi(indicator):
         time = self._span
         stochrsi = ta.STOCHRSI(close, timeperiod=14, fastk_period=5, fastd_period=3, fastd_matype=0)
         
-
-        col_name = "STOCHRSI " + str(self._span)
         
-        self._data[col_name] = stochrsi
+        self._data['STOCHRSI'] = stochrsi
         """
         self._data['Date'] = mdata['Date']
         self._data.set_index('Date', inplace=True)
@@ -733,10 +708,8 @@ class obv(indicator):
         time = self._span
         obv = ta.OBV(close, volume)
         
-
-        col_name = "OBV " + str(self._span)
         
-        self._data[col_name] = obv
+        self._data['OBV'] = obv
         """
         self._data['Date'] = mdata['Date']
         self._data.set_index('Date', inplace=True)
@@ -789,10 +762,60 @@ class sar(indicator):
         time = self._span
         sar = ta.SAR(high, low, acceleration=0.02, maximum=0.2)
         
-
-        col_name = "SAR " + str(self._span)
+        self._data['SAR'] = sar
+        """
+        self._data['Date'] = mdata['Date']
+        self._data.set_index('Date', inplace=True)
+        """
+    def update(self, mdata):
+        self._data.drop(self._data.index, inplace=True)
+        self.__calc_data(mdata)
         
-        self._data[col_name] = sar
+    def signal_at(self, datetime):
+        print("signal_at not yet implemented")
+        # TODO
+
+class adx(indicator):
+    def __init__(self, mdata, span=20, rowname="Close"):
+        self._type = "adx"
+        self._data = pd.DataFrame()
+
+        self._span = span
+        self._rowname = rowname
+
+        self.__calc_data(mdata)
+
+    @property
+    def type(self):
+        return self._type
+
+    @property
+    def data(self):
+        return self._data
+
+    @property
+    def span(self):
+        return self._span
+
+    # The function update() needs to be called after every parameter setting.  
+    @span.setter 
+    def span(self, value):
+        self._span = value
+
+    def __getitem__(self, index):
+        return self._data[index]
+
+    def __calc_data(self, mdata):
+
+
+        close = mdata['Close']
+        high = mdata['High']
+        low = mdata['Low']
+        volume = mdata['Volume']
+        time = self._span
+        adx = ta.ADX(high, low, close)
+        
+        self._data['ADX'] = adx
         """
         self._data['Date'] = mdata['Date']
         self._data.set_index('Date', inplace=True)
